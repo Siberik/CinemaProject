@@ -236,7 +236,7 @@
                         Height="100"
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        Margin="0,0,0,10" Style="{DynamicResource ProfileBtnStyle}" MouseEnter="Profile_MouseEnter" MouseLeave="Profile_MouseLeave">
+                        Margin="0,0,0,10" Style="{DynamicResource ProfileBtnStyle}" MouseEnter="Profile_MouseEnter" MouseLeave="Profile_MouseLeave" Click="Profile_Click">
 
                     <!--add image-->
                     <Image Source="Assets/Images/profile_icon.png"

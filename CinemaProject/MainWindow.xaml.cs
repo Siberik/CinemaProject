@@ -89,5 +89,11 @@ namespace PopupApp
         {
             DragMove();
         }
+
+        private void Profile_Click(object sender, RoutedEventArgs e)
+        {
+            AddFilm addFilm = new AddFilm();
+            addFilm.Show();
+        }
     }
 }
