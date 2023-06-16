@@ -31,5 +31,7 @@ namespace CinemaProject.Model
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Seanses> Seanses { get; set; }
+        public virtual DbSet<Seats> Seats { get; set; }
+        public virtual DbSet<Tickets> Tickets { get; set; }
     }
 }

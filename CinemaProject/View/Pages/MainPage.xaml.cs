@@ -5,13 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace CinemaProject.View.Pages
 {
     public partial class MainPage : Page
     {
-       
+        private const int MaxButtonsPerPage = 5;
+        private List<Button> filmButtons = new List<Button>();
+        private int currentPageIndex = 0;
+
         Core db = new Core();
 
         public MainPage()
@@ -30,34 +34,102 @@ namespace CinemaProject.View.Pages
             }
             else
             {
+                // Получение ссылки на стиль из словаря
+                Style buttonStyle = Application.Current.Resources["FilmButtonStyle"] as Style;
+
                 foreach (var film in filmList)
                 {
                     Button button = new Button();
+                    button.Margin = new Thickness(0, 0, 10, 0);
+                    button.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    button.Width = 240;
+                    button.Height = 390;
+                    button.Style = buttonStyle; // Применение стиля к кнопке
                     button.Content = CreateFilmButtonContent(film);
                     button.Click += (sender, e) => FilmButton_Click(film);
 
-                    FilmsStackPanel.Children.Add(button);
+                    filmButtons.Add(button);
                 }
+
+                ShowCurrentPage();
             }
         }
 
-        private StackPanel CreateFilmButtonContent(Films film)
+
+
+        private void ShowCurrentPage()
         {
-            StackPanel stackPanel = new StackPanel();
-            stackPanel.Orientation = Orientation.Vertical;
+            FilmsStackPanel.Children.Clear();
+
+            int startIndex = currentPageIndex * MaxButtonsPerPage;
+            int endIndex = startIndex + MaxButtonsPerPage;
+            List<Button> currentPageButtons = filmButtons.Skip(startIndex).Take(MaxButtonsPerPage).ToList();
+
+            foreach (Button button in currentPageButtons)
+            {
+                FilmsStackPanel.Children.Add(button);
+            }
+
+            UpdatePaginationButtons();
+        }
+
+        private void UpdatePaginationButtons()
+        {
+            PrevButton.IsEnabled = currentPageIndex > 0;
+            NextButton.IsEnabled = (currentPageIndex + 1) * MaxButtonsPerPage < filmButtons.Count;
+        }
+
+        private void PrevButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentPageIndex > 0)
+            {
+                currentPageIndex--;
+                ShowCurrentPage();
+            }
+        }
+
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            int totalPages = (int)Math.Ceiling((double)filmButtons.Count / MaxButtonsPerPage);
+
+            if (currentPageIndex < totalPages - 1)
+            {
+                currentPageIndex++;
+                ShowCurrentPage();
+            }
+        }
+
+        private Grid CreateFilmButtonContent(Films film)
+        {
+            Grid grid = new Grid();
 
             Image filmImage = new Image();
             filmImage.Source = LoadFilmImage(film); // Загрузка изображения фильма
-            filmImage.Width = 100;
-            filmImage.Height = 150;
-            stackPanel.Children.Add(filmImage);
+            filmImage.Stretch = Stretch.Fill; // Растягивание изображения на всю кнопку
+            filmImage.Width = 230; // Установка ширины картинки
+            filmImage.Height = 350; // Установка высоты картинки
+
+            grid.Children.Add(filmImage);
 
             TextBlock filmNameTextBlock = new TextBlock();
             filmNameTextBlock.Text = film.Name;
-            stackPanel.Children.Add(filmNameTextBlock);
+            filmNameTextBlock.TextAlignment = TextAlignment.Center; // Выравнивание текста по центру
+            filmNameTextBlock.Foreground = Brushes.White; // Цвет текста
 
-            return stackPanel;
+            // Расположение названия фильма внизу кнопки
+            Grid.SetRow(filmNameTextBlock, 1);
+
+            grid.Children.Add(filmNameTextBlock);
+
+            // Определение строк Grid
+            grid.RowDefinitions.Add(new RowDefinition());
+            grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+
+            return grid;
         }
+
+
+
 
         private BitmapImage LoadFilmImage(Films film)
         {

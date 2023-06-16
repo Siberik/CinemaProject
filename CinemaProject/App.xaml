@@ -5,9 +5,15 @@
              StartupUri="MainWindow.xaml"
               >
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Подключение первого словаря -->
+                <ResourceDictionary Source="Themes/DarkTheme.xaml" />
 
-        <ResourceDictionary Source="Themes/DarkTheme.xaml" />
-
+                <!-- Подключение второго словаря -->
+                <ResourceDictionary Source="Themes/MainDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 
 </Application>

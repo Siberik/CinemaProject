@@ -12,27 +12,20 @@ namespace CinemaProject.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Films
+    public partial class Tickets
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Films()
+        public Tickets()
         {
-            this.Seanses = new HashSet<Seanses>();
+            this.Seats = new HashSet<Seats>();
         }
     
         public int Id { get; set; }
-        public string Name { get; set; }
-        public Nullable<System.TimeSpan> Duration { get; set; }
-        public string Genre { get; set; }
-        public string GenreDescription { get; set; }
-        public string Firm { get; set; }
-        public string Country { get; set; }
-        public string Actors { get; set; }
-        public string Vozrast { get; set; }
-        public byte[] Image { get; set; }
-        public string Description { get; set; }
+        public int Films_Id_FK { get; set; }
+        public int Users_Id_FK { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Seanses> Seanses { get; set; }
+        public virtual ICollection<Seats> Seats { get; set; }
+        public virtual Users Users { get; set; }
     }
 }

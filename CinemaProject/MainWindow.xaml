@@ -275,7 +275,7 @@
 
                     <!-- Текст "Kino" -->
                     <TextBlock Text="Kino"
-               FontFamily="arial"
+               FontFamily="arial"%
                FontSize="26"
                VerticalAlignment="Center"
                HorizontalAlignment="Center"

@@ -5,8 +5,8 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using static System.Net.WebRequestMethods;
 
 namespace CinemaProject.View.Pages
 {
@@ -15,6 +15,7 @@ namespace CinemaProject.View.Pages
         private Core db = new Core();
         private byte[] imageData;
         HourAndDateChekingClass check = new HourAndDateChekingClass();
+
         public AddFilm()
         {
             InitializeComponent();
@@ -31,9 +32,28 @@ namespace CinemaProject.View.Pages
                 ImageNameTextBlock.Text = Path.GetFileName(imagePath);
 
                 // Чтение содержимого файла в виде массива байтов
-                imageData = System.IO.File.ReadAllBytes(imagePath);
+                imageData = File.ReadAllBytes(imagePath);
+
+                // Установка фонового изображения кнопки
+                BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
+                ImageBrush imageBrush = new ImageBrush(bitmapImage);
+
+                // Установка фона и размеров кнопки
+                LoadImageButton.Background = imageBrush;
+
+                double maxWidth = 500;
+                double maxHeight = 500;
+
+                double imageWidth = bitmapImage.Width;
+                double imageHeight = bitmapImage.Height;
+
+                double scaleFactor = Math.Min(maxWidth / imageWidth, maxHeight / imageHeight);
+
+                LoadImageButton.Width = scaleFactor * imageWidth;
+                LoadImageButton.Height = scaleFactor * imageHeight;
             }
         }
+
 
         private void AddFilm_Click(object sender, RoutedEventArgs e)
         {
@@ -46,37 +66,39 @@ namespace CinemaProject.View.Pages
             string country = CountryTextBox.Text;
             string actors = ActorsTextBox.Text;
             string vozrast = VozrastTextBox.Text;
+            string description = DescriptionTextBox.Text;
+            
+
             if (check.IsValidTimeFormat(duration))
             {
                 // Создание нового экземпляра фильма
                 Films film = new Films
-            {
-                Name = filmName,
-                Duration = TimeSpan.Parse(duration),
-                Genre = genre,
-                GenreDescription = genreDescription,
-                Firm = firm,
-                Country = country,
-                Actors = actors,
-                Vozrast = vozrast,
-                Image = imageData
-            };
+                {
+                    Name = filmName,
+                    Duration = TimeSpan.Parse(duration),
+                    Genre = genre,
+                    GenreDescription = genreDescription,
+                    Firm = firm,
+                    Country = country,
+                    Actors = actors,
+                    Vozrast = vozrast,
+                    Image = imageData,
+                    Description= description
+                };
 
-            // Добавление фильма в базу данных
-            db.context.Films.Add(film);
-            db.context.SaveChanges();
+                // Добавление фильма в базу данных
+                db.context.Films.Add(film);
+                db.context.SaveChanges();
 
-            MessageBox.Show("Фильм успешно добавлен!");
+                MessageBox.Show("Фильм успешно добавлен!");
 
-            // Закрытие окна
-            this.Close();
+                // Закрытие окна
+                Close();
             }
             else
             {
                 MessageBox.Show("Неправильно введена продолжительность");
             }
-          
-         
         }
     }
 }
