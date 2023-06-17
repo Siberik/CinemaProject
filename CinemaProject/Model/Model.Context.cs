@@ -28,10 +28,11 @@ namespace CinemaProject.Model
         public virtual DbSet<AdministratoRole> AdministratoRole { get; set; }
         public virtual DbSet<Administrators> Administrators { get; set; }
         public virtual DbSet<Films> Films { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<Hall> Hall { get; set; }
         public virtual DbSet<Seanses> Seanses { get; set; }
         public virtual DbSet<Seats> Seats { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Tickets> Tickets { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
     }
 }

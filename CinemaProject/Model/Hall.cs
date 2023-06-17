@@ -12,15 +12,18 @@ namespace CinemaProject.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Tickets
+    public partial class Hall
     {
-        public int TicketId { get; set; }
-        public Nullable<int> SeansId { get; set; }
-        public Nullable<int> SeatId { get; set; }
-        public int Users_Id_FK { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Hall()
+        {
+            this.Seanses = new HashSet<Seanses>();
+        }
     
-        public virtual Seanses Seanses { get; set; }
-        public virtual Seats Seats { get; set; }
-        public virtual Users Users { get; set; }
+        public int Id { get; set; }
+        public int Count { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Seanses> Seanses { get; set; }
     }
 }

@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
 using CinemaProject.View.Pages;
+using MaterialDesignThemes.Wpf;
 
 namespace PopupApp
 {
@@ -22,10 +23,14 @@ namespace PopupApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly PaletteHelper paletteHelper = new PaletteHelper();
         public MainWindow()
         {
             InitializeComponent();
             MainFrame.NavigationService.Navigate(new MainPage());
+            ITheme theme = paletteHelper.GetTheme();
+            theme.SetBaseTheme(Theme.Light);
+            paletteHelper.SetTheme(theme);
         }
 
         private void Home_MouseEnter(object sender, MouseEventArgs e)

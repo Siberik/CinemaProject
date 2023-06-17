@@ -14,15 +14,17 @@ namespace CinemaProject.Model
     
     public partial class Seats
     {
-        public int SeatId { get; set; }
-        public int Row { get; set; }
-        public int Colunt { get; set; }
-        public int Seanses_Id_FK { get; set; }
-        public int Users_Id_FK { get; set; }
-        public int Tickets_Id_FK { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Seats()
+        {
+            this.Tickets = new HashSet<Tickets>();
+        }
     
-        public virtual Seanses Seanses { get; set; }
-        public virtual Tickets Tickets { get; set; }
-        public virtual Users Users { get; set; }
+        public int SeatId { get; set; }
+        public Nullable<int> RowNumber { get; set; }
+        public Nullable<int> SeatNumber { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tickets> Tickets { get; set; }
     }
 }

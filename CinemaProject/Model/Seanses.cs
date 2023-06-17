@@ -17,16 +17,17 @@ namespace CinemaProject.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Seanses()
         {
-            this.Seats = new HashSet<Seats>();
+            this.Tickets = new HashSet<Tickets>();
         }
     
-        public System.DateTime Date { get; set; }
-        public int TicketCount { get; set; }
-        public int Films_FK_ID { get; set; }
-        public int Id { get; set; }
+        public int SeansId { get; set; }
+        public int FilmId { get; set; }
+        public System.DateTime SeansTime { get; set; }
+        public int Hall_Id_FK { get; set; }
     
         public virtual Films Films { get; set; }
+        public virtual Hall Hall { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Seats> Seats { get; set; }
+        public virtual ICollection<Tickets> Tickets { get; set; }
     }
 }

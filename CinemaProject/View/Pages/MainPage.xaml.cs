@@ -159,7 +159,7 @@ namespace CinemaProject.View.Pages
         {
             // Здесь вы можете выполнить необходимые действия при нажатии на кнопку фильма
             // например, перейти на другую страницу и передать экземпляр объекта фильма
-            // NavigationService.Navigate(new FilmPage(film));
+            NavigationService.Navigate(new FilmInfoPage(film));
         }
     }
 }
