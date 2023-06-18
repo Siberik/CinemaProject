@@ -2,7 +2,8 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:CinemaProject.View.Pages"
-      Title="SeansInfoPage">
+      Title="SeansInfoPage"
+      x:Name="SeansInfoPageInstance">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -13,7 +14,7 @@
 
         <TextBlock Text="Схема зала" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="0,10,0,0"/>
 
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding SeatItems}">
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding SeatItems, ElementName=SeansInfoPageInstance}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="10" Rows="6"/>
@@ -21,36 +22,15 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Width="30" Height="30" Margin="5" Background="{Binding SeatColor}" Content="{Binding SeatNumber}" Command="{Binding DataContext.ToggleSeatCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Foreground" Value="White"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsPressed" Value="True">
-                                        <Setter Property="Background" Value="Green"/>
-                                    </Trigger>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Background" Value="Gray"/>
-                                        <Setter Property="Content" Value="X"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
+                    <Button Width="30" Height="30" Margin="5" 
+                            Background="{Binding SeatColor}" Content="{Binding SeatNumber}"
+                            Command="{Binding DataContext.ToggleSeatCommand, RelativeSource={RelativeSource AncestorType={x:Type local:SeansInfoPage}}}"
+                            CommandParameter="{Binding}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
-            <StackPanel.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Margin" Value="5"/>
-                    <Setter Property="FontSize" Value="14"/>
-                </Style>
-            </StackPanel.Resources>
-            <TextBlock Text="Свободно" Foreground="Blue"/>
-            <TextBlock Text="Занято" Foreground="Red"/>
-            <Button Content="Купить" Margin="20,0" Command="{Binding BuyTicketsCommand}" Click="BuyTicketsButton_Click" Visibility="{Binding IsBuyButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        </StackPanel>
+        <Button Grid.Row="2" Content="Купить билеты" HorizontalAlignment="Center" Margin="0,10"
+                Command="{Binding BuyTicketsCommand}" Click="BuyTicketButton_Click"/>
     </Grid>
 </Page>

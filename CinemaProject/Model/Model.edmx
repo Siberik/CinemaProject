@@ -85,12 +85,11 @@
           <Key>
             <PropertyRef Name="TicketId" />
           </Key>
-          <Property Name="TicketId" Type="int" Nullable="false" />
+          <Property Name="TicketId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SeansId" Type="int" Nullable="false" />
           <Property Name="Row" Type="int" Nullable="false" />
           <Property Name="Columns" Type="int" Nullable="false" />
           <Property Name="Users_Id_FK" Type="int" Nullable="false" />
-          <Property Name="Tariff_Id_FK" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -148,18 +147,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Tickets_Tariff">
-          <End Role="Tariff" Type="Self.Tariff" Multiplicity="1" />
-          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tariff">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Tickets">
-              <PropertyRef Name="Tariff_Id_FK" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Tickets_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
@@ -197,10 +184,6 @@
           <AssociationSet Name="FK_Seanses_Hall" Association="Self.FK_Seanses_Hall">
             <End Role="Hall" EntitySet="Hall" />
             <End Role="Seanses" EntitySet="Seanses" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tickets_Tariff" Association="Self.FK_Tickets_Tariff">
-            <End Role="Tariff" EntitySet="Tariff" />
-            <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
           <AssociationSet Name="FK_Tickets_Users" Association="Self.FK_Tickets_Users">
             <End Role="Users" EntitySet="Users" />
@@ -286,6 +269,14 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
+        <EntityType Name="Tariff">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Cost" Type="Int32" />
+        </EntityType>
         <EntityType Name="Tickets">
           <Key>
             <PropertyRef Name="TicketId" />
@@ -297,8 +288,6 @@
           <Property Name="Users_Id_FK" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Seanses" Relationship="Self.FK__Tickets__SeansId__00200768" FromRole="Tickets" ToRole="Seanses" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Tickets_Users" FromRole="Tickets" ToRole="Users" />
-          <Property Name="Tariff_Id_FK" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Tariff" Relationship="CinemaModel.FK_Tickets_Tariff" FromRole="Tickets" ToRole="Tariff" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -376,6 +365,7 @@
           <EntitySet Name="Hall" EntityType="Self.Hall" />
           <EntitySet Name="Seanses" EntityType="Self.Seanses" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Tariff" EntityType="Self.Tariff" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" />
           <EntitySet Name="Users" EntityType="Self.Users" />
           <AssociationSet Name="FK_Administrators_AdministratoRole" Association="Self.FK_Administrators_AdministratoRole">
@@ -398,33 +388,7 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
-          <EntitySet Name="Tariff" EntityType="CinemaModel.Tariff" />
-          <AssociationSet Name="FK_Tickets_Tariff" Association="CinemaModel.FK_Tickets_Tariff">
-            <End Role="Tariff" EntitySet="Tariff" />
-            <End Role="Tickets" EntitySet="Tickets" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Tariff">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Cost" Type="Int32" />
-          <NavigationProperty Name="Tickets" Relationship="CinemaModel.FK_Tickets_Tariff" FromRole="Tariff" ToRole="Tickets" />
-        </EntityType>
-        <Association Name="FK_Tickets_Tariff">
-          <End Type="CinemaModel.Tariff" Role="Tariff" Multiplicity="1" />
-          <End Type="CinemaModel.Tickets" Role="Tickets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tariff">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Tickets">
-              <PropertyRef Name="Tariff_Id_FK" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -505,10 +469,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Tariff">
+            <EntityTypeMapping TypeName="CinemaModel.Tariff">
+              <MappingFragment StoreEntitySet="Tariff">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Tickets">
             <EntityTypeMapping TypeName="CinemaModel.Tickets">
               <MappingFragment StoreEntitySet="Tickets">
-                <ScalarProperty Name="Tariff_Id_FK" ColumnName="Tariff_Id_FK" />
                 <ScalarProperty Name="TicketId" ColumnName="TicketId" />
                 <ScalarProperty Name="SeansId" ColumnName="SeansId" />
                 <ScalarProperty Name="Row" ColumnName="Row" />
@@ -523,15 +495,6 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="login" ColumnName="login" />
                 <ScalarProperty Name="password" ColumnName="password" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tariff">
-            <EntityTypeMapping TypeName="CinemaModel.Tariff">
-              <MappingFragment StoreEntitySet="Tariff">
-                <ScalarProperty Name="Cost" ColumnName="Cost" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

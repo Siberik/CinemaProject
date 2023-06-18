@@ -12,10 +12,8 @@ namespace CinemaProject.View.Pages
 {
     public partial class SeansInfoPage : Page, INotifyPropertyChanged
     {
-        private Core db = new Core();
-        private Seanses seanses;
-        private Users user;
         private ObservableCollection<SeatItem> seatItems;
+        private ObservableCollection<string> selectedSeats;
 
         public ObservableCollection<SeatItem> SeatItems
         {
@@ -28,22 +26,39 @@ namespace CinemaProject.View.Pages
         }
 
         public ICommand ToggleSeatCommand { get; }
-
-        public SeansInfoPage(Seanses seanses, Users user = null)
+        Core db = new Core();
+        private Seanses seans;
+        private Users user;
+        public SeansInfoPage(Seanses seans, Users user)
         {
-            this.user = user;
-            this.seanses = seanses;
             InitializeComponent();
-            Hall hall = db.context.Hall.FirstOrDefault(x => x.Id == seanses.Hall_Id_FK);
+            this.seans = seans;
+            this.user = user;
+
             int rows = 6;
             int columns = 10;
 
             SeatItems = new ObservableCollection<SeatItem>();
+            selectedSeats = new ObservableCollection<string>();
+
+            // Получение информации о купленных билетах для данного сеанса
+            var boughtTickets = db.context.Tickets.Where(t => t.SeansId == seans.SeansId).ToList();
+
             for (int row = 1; row <= rows; row++)
             {
                 for (int column = 1; column <= columns; column++)
                 {
-                    SeatItems.Add(new SeatItem(row, column));
+                    SeatItem seatItem = new SeatItem(row, column);
+
+                    // Проверка, является ли место уже купленным
+                    var boughtTicket = boughtTickets.FirstOrDefault(t => t.Row == row && t.Columns == column);
+                    if (boughtTicket != null)
+                    {
+                        seatItem.SeatColor = Brushes.Red;
+                        seatItem.IsSelectable = false; // Устанавливаем флаг, что место нельзя выбрать
+                    }
+
+                    SeatItems.Add(seatItem);
                 }
             }
 
@@ -55,42 +70,68 @@ namespace CinemaProject.View.Pages
         {
             if (parameter is SeatItem seatItem)
             {
-                seatItem.IsSelected = !seatItem.IsSelected;
+                if (!seatItem.IsSelectable)
+                {
+                    MessageBox.Show("Это место уже куплено.");
+                    return;
+                }
+
+                if (seatItem.IsSelected)
+                {
+                    seatItem.IsSelected = false;
+                    selectedSeats.Remove(seatItem.SeatName);
+                }
+                else
+                {
+                    if (selectedSeats.Count < 5)
+                    {
+                        seatItem.IsSelected = true;
+                        selectedSeats.Add(seatItem.SeatName);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Вы можете выбрать только до 5 мест.");
+                    }
+                }
             }
         }
 
-        private void BuyTicketsButton_Click(object sender, RoutedEventArgs e)
+        private void BuyTicketButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedSeats = SeatItems.Where(s => s.IsSelected).Take(5).ToList();
             if (selectedSeats.Count == 0)
             {
-                MessageBox.Show("Пожалуйста, выберите места для покупки билетов.");
+                MessageBox.Show("Пожалуйста, выберите место для покупки билета.");
                 return;
             }
 
-            if (selectedSeats.Count > 5)
+            foreach (string seat in selectedSeats)
             {
-                MessageBox.Show("Вы можете купить не более 5 билетов за один раз.");
-                return;
-            }
-
-            foreach (var seat in selectedSeats)
-            {
-                Tickets ticket = new Tickets
+                string[] seatParts = seat.Split('_');
+                int row = int.Parse(seatParts[0].Substring(6));
+                int column = int.Parse(seatParts[1]);
+                SeatItem seatItem = SeatItems.FirstOrDefault(s => s.SeatName == seat);
+                if (seatItem != null)
                 {
-                    SeansId = seanses.SeansId,
-                    Row = seat.Row,
-                    Columns = seat.Column,
-                    Users_Id_FK = user.Id,
-                    Tariff_Id_FK = 1 // Здесь нужно указать соответствующий идентификатор тарифа
-                };
+                    seatItem.SeatColor = Brushes.Red; // Изменение цвета места после покупки
+                    seatItem.IsSelectable = false; // Место больше нельзя выбрать
+                }
 
+                // Здесь можно добавить логику для создания билета и его сохранения в базе данных
+                Tickets ticket = new Tickets()
+                {
+                    Users_Id_FK = user.Id,
+                    SeansId = seans.SeansId,
+                    Row = row,
+                    Columns = column,
+                };
                 db.context.Tickets.Add(ticket);
             }
 
             db.context.SaveChanges();
 
             MessageBox.Show("Билеты куплены.");
+
+            selectedSeats.Clear();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -105,10 +146,12 @@ namespace CinemaProject.View.Pages
     {
         private bool isSelected;
         private Brush seatColor;
+        private bool isSelectable;
 
         public int Row { get; set; }
         public int Column { get; set; }
         public int SeatNumber { get; set; }
+        public string SeatName => $"Button{Row}_{Column}";
 
         public Brush SeatColor
         {
@@ -137,18 +180,44 @@ namespace CinemaProject.View.Pages
             }
         }
 
+        public bool IsSelectable
+        {
+            get { return isSelectable; }
+            set
+            {
+                if (isSelectable != value)
+                {
+                    isSelectable = value;
+                    OnPropertyChanged(nameof(IsSelectable));
+                    UpdateSeatColor();
+                }
+            }
+        }
+
         public SeatItem(int row, int column)
         {
             Row = row;
             Column = column;
             SeatNumber = (row - 1) * 10 + column;
             IsSelected = false;
+            IsSelectable = true;
             UpdateSeatColor();
         }
 
         private void UpdateSeatColor()
         {
-            SeatColor = IsSelected ? Brushes.Green : Brushes.White;
+            if (!IsSelectable)
+            {
+                SeatColor = Brushes.Red;
+            }
+            else if (IsSelected)
+            {
+                SeatColor = Brushes.Green;
+            }
+            else
+            {
+                SeatColor = Brushes.White;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

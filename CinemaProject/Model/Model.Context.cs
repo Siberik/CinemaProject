@@ -31,8 +31,8 @@ namespace CinemaProject.Model
         public virtual DbSet<Hall> Hall { get; set; }
         public virtual DbSet<Seanses> Seanses { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<Tariff> Tariff { get; set; }
         public virtual DbSet<Tickets> Tickets { get; set; }
         public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<Tariff> Tariff { get; set; }
     }
 }
