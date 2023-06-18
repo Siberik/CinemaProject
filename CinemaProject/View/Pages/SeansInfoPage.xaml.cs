@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using CinemaProject.View.Pages;
+using System.Collections.Generic;
 
 namespace CinemaProject.View.Pages
 {
@@ -104,6 +106,16 @@ namespace CinemaProject.View.Pages
                 return;
             }
 
+            int totalTicketsCount = db.context.Tickets.Count(t => t.SeansId == seans.SeansId && t.Users_Id_FK == user.Id);
+
+            if (selectedSeats.Count + totalTicketsCount > 6)
+            {
+                MessageBox.Show("Вы не можете купить больше 5 билетов на данный сеанс.");
+                return;
+            }
+
+            List<Tickets> boughtTickets = new List<Tickets>();
+
             foreach (string seat in selectedSeats)
             {
                 string[] seatParts = seat.Split('_');
@@ -125,14 +137,22 @@ namespace CinemaProject.View.Pages
                     Columns = column,
                 };
                 db.context.Tickets.Add(ticket);
+
+                // Добавляем купленный билет в список
+                boughtTickets.Add(ticket);
             }
 
             db.context.SaveChanges();
 
             MessageBox.Show("Билеты куплены.");
 
+            //// Открываем новую страницу с передачей списка только что купленных билетов
+            //MyTicketsPage myTicketsPage = new MyTicketsPage(boughtTickets);
+            //NavigationService.Navigate(myTicketsPage);
+
             selectedSeats.Clear();
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
