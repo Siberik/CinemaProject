@@ -1,5 +1,6 @@
 ﻿using CinemaProject.Model;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -11,12 +12,15 @@ namespace CinemaProject.View.Pages
         private Core db = new Core();
         private Films film;
         private Users user;
-        public FilmInfoPage(Films film,Users user=null,Administrators admin=null)
+        public FilmInfoPage(Films film, Users user = null, Administrators admin = null)
         {
             InitializeComponent();
             this.user = user;
             this.film = film;
-
+            if (admin == null) {
+                AddSeansButton.Visibility = System.Windows.Visibility.Collapsed;
+                RedactStackPanel.Visibility = System.Windows.Visibility.Collapsed;
+            }
             // Set film image
             if (film.Image != null && film.Image.Length > 0)
             {
@@ -54,6 +58,7 @@ namespace CinemaProject.View.Pages
                     Button button = new Button();
                     button.Content = seans.SeansTime.ToString();
                     button.Click += (sender, e) => NavigateToSeansesPage(seans);
+                    button.Margin = new System.Windows.Thickness(5, 0, 0, 0);
                     SeansesStackPanel.Children.Add(button);
                 }
             }
@@ -72,5 +77,53 @@ namespace CinemaProject.View.Pages
             AddSeans addSeans = new AddSeans(film);
             addSeans.ShowDialog();
         }
+
+        private void RedactFilmButtonClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            RedactPage redactPage = new RedactPage(film);
+            redactPage.Show();
+        }
+
+     
+         
+            private void DeleteFilmClick(object sender, RoutedEventArgs e)
+            {
+                MessageBoxResult result = MessageBox.Show("Вы уверены, что хотите удалить этот фильм?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                  
+                        // Находим фильм в базе данных
+                        Films filmToDelete = db.context.Films.FirstOrDefault(f => f.Id == film.Id);
+
+                        if (filmToDelete != null)
+                        {
+                            // Удаление билетов, связанных с фильмом
+                            var ticketsToDelete = db.context.Tickets.Where(t => t.Seanses.FilmId == filmToDelete.Id);
+                            db.context.Tickets.RemoveRange(ticketsToDelete);
+
+                            // Удаление сеансов, связанных с фильмом
+                            var seansesToDelete = db.context.Seanses.Where(s => s.FilmId == filmToDelete.Id);
+                            db.context.Seanses.RemoveRange(seansesToDelete);
+
+                            // Удаление фильма
+                            db.context.Films.Remove(filmToDelete);
+                            db.context.SaveChanges();
+
+                            MessageBox.Show("Фильм успешно удален.");
+
+                            // Перенаправление на предыдущую страницу
+                            NavigationService?.GoBack();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Фильм не найден.");
+                        }
+                    }
+                }
+            
+
+
+
+        }
     }
-}
+

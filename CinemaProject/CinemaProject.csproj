@@ -119,6 +119,9 @@
     <Compile Include="View\Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Pages\RedactPage.xaml.cs">
+      <DependentUpon>RedactPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Pages\SeansInfoPage.xaml.cs">
       <DependentUpon>SeansInfoPage.xaml</DependentUpon>
     </Compile>
@@ -236,6 +239,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Pages\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Pages\RedactPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

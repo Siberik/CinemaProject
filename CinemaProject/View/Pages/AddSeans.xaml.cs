@@ -55,7 +55,7 @@ namespace CinemaProject.View.Pages
                 if(db.context.SaveChanges()!=0)
                 {
                     MessageBox.Show("Добавление успешно сделано!");
-
+                    Close();
                 }
 
             }

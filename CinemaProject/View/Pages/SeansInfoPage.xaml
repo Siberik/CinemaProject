@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="clr-namespace:CinemaProject.View.Pages"
       Title="SeansInfoPage"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       x:Name="SeansInfoPageInstance">
 
     <Grid>
@@ -13,7 +14,19 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Схема зала" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="0,10,0,0"/>
+        <Button Background="Red" Name="DeleteSeans" HorizontalAlignment="Right" Margin="0,0,5,0">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Delete" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal">
 
+                        <TextBlock Text="Удалить сеанс"  VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </Button.Content>
+
+        </Button>
         <ItemsControl Grid.Row="1" ItemsSource="{Binding SeatItems, ElementName=SeansInfoPageInstance}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -30,7 +43,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Button Grid.Row="2" Content="Купить билеты" HorizontalAlignment="Center" Margin="0,10"
+        <Button Grid.Row="2" Content="Купить билеты" Name="BuyButton" HorizontalAlignment="Center" Margin="0,10"
                 Command="{Binding BuyTicketsCommand}" Click="BuyTicketButton_Click"/>
     </Grid>
 </Page>

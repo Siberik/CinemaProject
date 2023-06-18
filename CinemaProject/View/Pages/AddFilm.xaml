@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CinemaProject.View.Pages"
         mc:Ignorable="d"
-        Title="AddFilm" Height="662" Width="800" Background="{DynamicResource SecundaryBackgroundColor}">
+        Title="Добавить фильм" Height="662" Width="800" >
     <Grid Margin="0,0,0,-198">
         <Grid.RowDefinitions>
             <RowDefinition Height="596*"/>

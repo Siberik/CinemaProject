@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CinemaProject.View.Pages"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="FilmInfoPage">
@@ -19,6 +20,30 @@
 
         <!-- Текстовые блоки -->
         <StackPanel Grid.Column="1" Margin="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" x:Name="RedactStackPanel">
+                <Button Margin="0,0,10,0" Name="RedactFilmButton" Click="RedactFilmButtonClick">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Pencil" VerticalAlignment="Center"/>
+                        <TextBlock Text="Редактировать" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Background="Red" Click="DeleteFilmClick">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Delete" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal">
+                           
+                            <TextBlock Text="Удалить фильм"  VerticalAlignment="Center"/>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                </Button.Content>
+                
+            </Button>
+            </StackPanel>
+           
+
             <TextBlock x:Name="IdTextBlock" FontWeight="Bold" FontSize="24"/>
             <TextBlock x:Name="NameTextBlock" Margin="0,5,0,0" FontSize="20"/>
             <TextBlock x:Name="DurationTextBlock" Margin="0,5,0,0" FontSize="16"/>
@@ -32,11 +57,20 @@
         </StackPanel>
 
         <!-- Раздел "Ближайшие кинопоказы" -->
-        <StackPanel Grid.Column="1" Margin="10" VerticalAlignment="Bottom" >
+        <StackPanel Grid.Column="1" Margin="10" VerticalAlignment="Bottom">
             <TextBlock Text="Ближайшие кинопоказы" FontSize="20" FontWeight="Bold" Margin="0,10,0,5"/>
-            <Button HorizontalAlignment="Right" Content="Добавить сеанс" Name="AddSeansButton" Click="AddSeansButtonClick"/>
-            <!-- Здесь добавляются кнопки с сеансами фильма -->
-            <StackPanel Orientation="Horizontal" x:Name="SeansesStackPanel"/>
+            <Button HorizontalAlignment="Right" Margin="0,0,0,15" Name="AddSeansButton" Click="AddSeansButtonClick">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Plus" VerticalAlignment="Center"/>
+                    <TextBlock Text="Добавить сеанс" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Horizontal" x:Name="SeansesStackPanel"/>
+            </ScrollViewer>
         </StackPanel>
+
+
     </Grid>
-</Page>
+</Page> 

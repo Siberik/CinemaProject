@@ -6,7 +6,7 @@
      xmlns:local="clr-namespace:CinemaProject.View.Pages"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
      mc:Ignorable="d"
-     Title="AddSeans" Height="904" Width="732">
+     Title="Добавить сеанс " Height="904" Width="732">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

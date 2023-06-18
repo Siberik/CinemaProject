@@ -26,6 +26,13 @@ namespace CinemaProject.View.Pages
             this.admin = admin;
             InitializeComponent();
             PopulateFilmButtons();
+            if (admin != null) { 
+            AddButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AddButton.Visibility= Visibility.Collapsed;
+            }
         }
 
         private void PopulateFilmButtons()
@@ -164,6 +171,17 @@ namespace CinemaProject.View.Pages
             // Здесь вы можете выполнить необходимые действия при нажатии на кнопку фильма
             // например, перейти на другую страницу и передать экземпляр объекта фильма
             NavigationService.Navigate(new FilmInfoPage(film,user,admin));
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddButtonClick(object sender, RoutedEventArgs e)
+        {
+            AddFilm addFilm = new AddFilm();
+            addFilm.Show();
         }
     }
 }

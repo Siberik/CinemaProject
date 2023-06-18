@@ -34,6 +34,14 @@ namespace CinemaProject.View.Pages
         public SeansInfoPage(Seanses seans, Users user)
         {
             InitializeComponent();
+            if(user == null)
+            {
+                BuyButton.IsEnabled = false;
+            }
+            if (user != null)
+            {
+                DeleteSeans.Visibility = Visibility.Collapsed;
+            }
             this.seans = seans;
             this.user = user;
 
