@@ -110,6 +110,9 @@
     <Compile Include="View\Pages\AddFilm.xaml.cs">
       <DependentUpon>AddFilm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Pages\AddPersonalWindow.xaml.cs">
+      <DependentUpon>AddPersonalWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Pages\AddSeans.xaml.cs">
       <DependentUpon>AddSeans.xaml</DependentUpon>
     </Compile>
@@ -233,6 +236,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Pages\AddFilm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Pages\AddPersonalWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
