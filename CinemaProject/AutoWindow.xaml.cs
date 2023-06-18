@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace WPF_login
 {
-  
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -61,40 +61,39 @@ namespace WPF_login
             Application.Current.Shutdown();
         }
 
-        
+
 
         private void loginBtnClick(object sender, RoutedEventArgs e)
         {
-            Users user;
-        if(db.context.Users.Where(x=>x.login== txtUsername.Text) != null)
+            if (txtPassword.Password == string.Empty || txtUsername.Text == string.Empty)
             {
-               user= db.context.Users.FirstOrDefault(x=>x.login == txtUsername.Text);
-                if (db.context.Users.Where(x => x.password == user.password) != null) {
-                    MessageBox.Show("Вы авторизовались как пользователь");
-                    MainWindow mainWindow = new MainWindow(user);
-                    mainWindow.Show();
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("Проверьте правильность введённого пароля");
-                }
+                MessageBox.Show("Заполните все поля");
+                return; // Добавьте return, чтобы остановить выполнение метода
             }
-        else if(db.context.Administrators.Where(x=>x.login==txtUsername.Text) != null)
-            {
-                Administrators admin= db.context.Administrators.FirstOrDefault(x=>x.login==txtUsername.Text);
-                if(db.context.Administrators.Where(x=>x.password==admin.password) != null)
-                {
-                    MessageBox.Show("Вы авторизовались как администратор");
-                    MainWindow mainWindow = new MainWindow(null,admin);
-                    mainWindow.Show();
-                    this.Close();
-                }
 
+            Users user = db.context.Users.FirstOrDefault(x => x.login == txtUsername.Text);
+            if (user != null && user.password == txtPassword.Password)
+            {
+                MessageBox.Show("Вы авторизовались как пользователь");
+                MainWindow mainWindow = new MainWindow(user);
+                mainWindow.Show();
+                this.Close();
+                return; // Добавьте return, чтобы остановить выполнение метода
             }
+
+            Administrators admin = db.context.Administrators.FirstOrDefault(x => x.login == txtUsername.Text);
+            if (admin != null && admin.password == txtPassword.Password)
+            {
+                MessageBox.Show("Вы авторизовались как администратор");
+                MainWindow mainWindow = new MainWindow(null, admin);
+                mainWindow.Show();
+                this.Close();
+                return; // Добавьте return, чтобы остановить выполнение метода
+            }
+
+            MessageBox.Show("Проверьте правильность введённого пароля или логина");
         }
-        
 
-       
     }
 }
+    

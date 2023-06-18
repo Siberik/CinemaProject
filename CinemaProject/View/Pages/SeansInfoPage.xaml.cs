@@ -108,7 +108,7 @@ namespace CinemaProject.View.Pages
 
             int totalTicketsCount = db.context.Tickets.Count(t => t.SeansId == seans.SeansId && t.Users_Id_FK == user.Id);
 
-            if (selectedSeats.Count + totalTicketsCount > 6)
+            if (selectedSeats.Count + totalTicketsCount > 5)
             {
                 MessageBox.Show("Вы не можете купить больше 5 билетов на данный сеанс.");
                 return;
@@ -147,8 +147,8 @@ namespace CinemaProject.View.Pages
             MessageBox.Show("Билеты куплены.");
 
             //// Открываем новую страницу с передачей списка только что купленных билетов
-            //MyTicketsPage myTicketsPage = new MyTicketsPage(boughtTickets);
-            //NavigationService.Navigate(myTicketsPage);
+            FinalTicketPage finalTicketPage = new FinalTicketPage(boughtTickets);
+            NavigationService.Navigate(finalTicketPage);
 
             selectedSeats.Clear();
         }
