@@ -33,6 +33,10 @@ namespace PopupApp
             this.user = user;
             this.admin = admin;
             InitializeComponent();
+            if(user != null)
+            {
+                Profile.Visibility = Visibility.Collapsed;
+            }
             MainFrame.NavigationService.Navigate(new MainPage(user,admin));
             ITheme theme = paletteHelper.GetTheme();
             theme.SetBaseTheme(Theme.Light);
@@ -58,7 +62,7 @@ namespace PopupApp
             popup_uc.PlacementTarget = Profile;
             popup_uc.Placement = PlacementMode.Right;
             popup_uc.IsOpen = true;
-            Header.PopupText.Text = "в";
+            Header.PopupText.Text = "Страница с сотрудниками";
         }
 
         private void Profile_MouseLeave(object sender, MouseEventArgs e)
@@ -104,8 +108,7 @@ namespace PopupApp
 
         private void Profile_Click(object sender, RoutedEventArgs e)
         {
-            AddFilm addFilm = new AddFilm();
-            addFilm.Show();
+            MainFrame.Navigate(new PersonalPage());
         }
     }
 }

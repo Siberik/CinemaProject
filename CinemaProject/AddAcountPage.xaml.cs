@@ -1,5 +1,4 @@
 ﻿//Theme Code ==================>>
-using CinemaProject;
 using CinemaProject.Model;
 using MahApps.Metro.Controls;
 using MaterialDesignThemes.Wpf;
@@ -10,23 +9,21 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
-namespace WPF_login
+namespace CinemaProject
 {
-
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для AddAcountPage.xaml
     /// </summary>
-    public partial class AutoWindow : Window
+    public partial class AddAcountPage : Window
     {
         Core db = new Core();
-        public AutoWindow()
+        public AddAcountPage()
         {
             ITheme theme = paletteHelper.GetTheme();
             InitializeComponent();
             theme.SetBaseTheme(MaterialDesignThemes.Wpf.Theme.Dark);
             paletteHelper.SetTheme(theme);
         }
-
         //Theme Code ========================>
         public bool IsDarkTheme { get; set; }
         private readonly PaletteHelper paletteHelper = new PaletteHelper();
@@ -66,41 +63,24 @@ namespace WPF_login
 
         private void loginBtnClick(object sender, RoutedEventArgs e)
         {
-            if (txtPassword.Password == string.Empty || txtUsername.Text == string.Empty)
-            {
-                MessageBox.Show("Заполните все поля");
-                return; // Добавьте return, чтобы остановить выполнение метода
-            }
-
-            Users user = db.context.Users.FirstOrDefault(x => x.login == txtUsername.Text);
-            if (user != null && user.password == txtPassword.Password)
-            {
-                MessageBox.Show("Вы авторизовались как пользователь");
-                MainWindow mainWindow = new MainWindow(user);
+            if (txtPassword.Password != null && txtUsername.Text != null) {
+                Users users = new Users()
+                {
+                    login=txtUsername.Text,
+                    password = txtPassword.Password,
+                };
+                db.context.Users.Add(users);
+                db.context.SaveChanges();
+                MessageBox.Show("Вы успешно зарегистрированы!");
+                MainWindow mainWindow = new MainWindow(users);
                 mainWindow.Show();
                 this.Close();
-                return; // Добавьте return, чтобы остановить выполнение метода
             }
-
-            Administrators admin = db.context.Administrators.FirstOrDefault(x => x.login == txtUsername.Text);
-            if (admin != null && admin.password == txtPassword.Password)
+            else
             {
-                MessageBox.Show("Вы авторизовались как администратор");
-                MainWindow mainWindow = new MainWindow(null, admin);
-                mainWindow.Show();
-                this.Close();
-                return; // Добавьте return, чтобы остановить выполнение метода
+                MessageBox.Show("Заполните все данные");
             }
-
-            MessageBox.Show("Проверьте правильность введённого пароля или логина");
         }
 
-        private void signupClick(object sender, RoutedEventArgs e)
-        {
-            AddAcountPage add = new AddAcountPage();
-            add.Show();
-            this.Close();
-        }
     }
 }
-    
