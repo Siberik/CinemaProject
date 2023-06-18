@@ -34,7 +34,7 @@ namespace CinemaProject.View.Pages
         public SeansInfoPage(Seanses seans, Users user)
         {
             InitializeComponent();
-            if(user == null)
+            if (user == null)
             {
                 BuyButton.IsEnabled = false;
             }
@@ -168,91 +168,121 @@ namespace CinemaProject.View.Pages
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
 
-    public class SeatItem : INotifyPropertyChanged
-    {
-        private bool isSelected;
-        private Brush seatColor;
-        private bool isSelectable;
 
-        public int Row { get; set; }
-        public int Column { get; set; }
-        public int SeatNumber { get; set; }
-        public string SeatName => $"Button{Row}_{Column}";
 
-        public Brush SeatColor
+        private void DeleteSeansClick(object sender, RoutedEventArgs e)
         {
-            get { return seatColor; }
-            set
+            // Получить выбранный сеанс
+            var selectedSeans = seans;
+            if (selectedSeans == null)
             {
-                if (seatColor != value)
+                // Если сеанс не выбран, выполнить дополнительную обработку или вывести сообщение об ошибке
+                return;
+            }
+
+            // Удалить билеты, связанные с выбранным сеансом
+            db.context.Tickets.RemoveRange(selectedSeans.Tickets);
+
+            // Загрузить выбранный сеанс из базы данных
+            selectedSeans = db.context.Seanses.Find(selectedSeans.SeansId);
+
+            // Удалить выбранный сеанс
+            db.context.Seanses.Remove(selectedSeans);
+
+            // Сохранить изменения в базе данных
+            db.context.SaveChanges();
+
+            // Дополнительная логика после удаления сеанса и билетов
+            MessageBox.Show("Сеанс удалён");
+        }
+
+
+
+        public class SeatItem : INotifyPropertyChanged
+        {
+            private bool isSelected;
+            private Brush seatColor;
+            private bool isSelectable;
+
+            public int Row { get; set; }
+            public int Column { get; set; }
+            public int SeatNumber { get; set; }
+            public string SeatName => $"Button{Row}_{Column}";
+
+            public Brush SeatColor
+            {
+                get { return seatColor; }
+                set
                 {
-                    seatColor = value;
-                    OnPropertyChanged(nameof(SeatColor));
+                    if (seatColor != value)
+                    {
+                        seatColor = value;
+                        OnPropertyChanged(nameof(SeatColor));
+                    }
                 }
             }
-        }
 
-        public bool IsSelected
-        {
-            get { return isSelected; }
-            set
+            public bool IsSelected
             {
-                if (isSelected != value)
+                get { return isSelected; }
+                set
                 {
-                    isSelected = value;
-                    OnPropertyChanged(nameof(IsSelected));
-                    UpdateSeatColor();
+                    if (isSelected != value)
+                    {
+                        isSelected = value;
+                        OnPropertyChanged(nameof(IsSelected));
+                        UpdateSeatColor();
+                    }
                 }
             }
-        }
 
-        public bool IsSelectable
-        {
-            get { return isSelectable; }
-            set
+            public bool IsSelectable
             {
-                if (isSelectable != value)
+                get { return isSelectable; }
+                set
                 {
-                    isSelectable = value;
-                    OnPropertyChanged(nameof(IsSelectable));
-                    UpdateSeatColor();
+                    if (isSelectable != value)
+                    {
+                        isSelectable = value;
+                        OnPropertyChanged(nameof(IsSelectable));
+                        UpdateSeatColor();
+                    }
                 }
             }
-        }
 
-        public SeatItem(int row, int column)
-        {
-            Row = row;
-            Column = column;
-            SeatNumber = (row - 1) * 10 + column;
-            IsSelected = false;
-            IsSelectable = true;
-            UpdateSeatColor();
-        }
-
-        private void UpdateSeatColor()
-        {
-            if (!IsSelectable)
+            public SeatItem(int row, int column)
             {
-                SeatColor = Brushes.Red;
+                Row = row;
+                Column = column;
+                SeatNumber = (row - 1) * 10 + column;
+                IsSelected = false;
+                IsSelectable = true;
+                UpdateSeatColor();
             }
-            else if (IsSelected)
-            {
-                SeatColor = Brushes.Green;
-            }
-            else
-            {
-                SeatColor = Brushes.White;
-            }
-        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+            private void UpdateSeatColor()
+            {
+                if (!IsSelectable)
+                {
+                    SeatColor = Brushes.Red;
+                }
+                else if (IsSelected)
+                {
+                    SeatColor = Brushes.Green;
+                }
+                else
+                {
+                    SeatColor = Brushes.White;
+                }
+            }
 
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            protected virtual void OnPropertyChanged(string propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }
