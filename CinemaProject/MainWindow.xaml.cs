@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
 using CinemaProject.View.Pages;
 using MaterialDesignThemes.Wpf;
+using CinemaProject.Model;
 
 namespace PopupApp
 {
@@ -23,11 +24,16 @@ namespace PopupApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        Core db = new Core();
+        private Users user;
+        private Administrators admin;
         private readonly PaletteHelper paletteHelper = new PaletteHelper();
-        public MainWindow()
+        public MainWindow(Users user=null,Administrators admin=null)
         {
+            this.user = user;
+            this.admin = admin;
             InitializeComponent();
-            MainFrame.NavigationService.Navigate(new MainPage());
+            MainFrame.NavigationService.Navigate(new MainPage(user,admin));
             ITheme theme = paletteHelper.GetTheme();
             theme.SetBaseTheme(Theme.Light);
             paletteHelper.SetTheme(theme);
@@ -87,7 +93,8 @@ namespace PopupApp
 
         private void HomeClick(object sender, RoutedEventArgs e)
         {
-            MainFrame.NavigationService.Navigate(new MainPage());
+           
+            MainFrame.NavigationService.Navigate(new MainPage(user,admin));
         }
 
         private void Grid_MouseEnter(object sender, MouseEventArgs e)

@@ -15,12 +15,14 @@ namespace CinemaProject.Model
     public partial class Tickets
     {
         public int TicketId { get; set; }
-        public Nullable<int> SeansId { get; set; }
-        public Nullable<int> SeatId { get; set; }
+        public int SeansId { get; set; }
+        public int Row { get; set; }
+        public int Columns { get; set; }
         public int Users_Id_FK { get; set; }
+        public int Tariff_Id_FK { get; set; }
     
         public virtual Seanses Seanses { get; set; }
-        public virtual Seats Seats { get; set; }
         public virtual Users Users { get; set; }
+        public virtual Tariff Tariff { get; set; }
     }
 }

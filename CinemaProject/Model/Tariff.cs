@@ -12,17 +12,17 @@ namespace CinemaProject.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Seats
+    public partial class Tariff
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Seats()
+        public Tariff()
         {
             this.Tickets = new HashSet<Tickets>();
         }
     
-        public int SeatId { get; set; }
-        public Nullable<int> RowNumber { get; set; }
-        public Nullable<int> SeatNumber { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public Nullable<int> Cost { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tickets> Tickets { get; set; }

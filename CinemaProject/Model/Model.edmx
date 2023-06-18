@@ -63,14 +63,6 @@
           <Property Name="SeansTime" Type="datetime" Nullable="false" />
           <Property Name="Hall_Id_FK" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Seats">
-          <Key>
-            <PropertyRef Name="SeatId" />
-          </Key>
-          <Property Name="SeatId" Type="int" Nullable="false" />
-          <Property Name="RowNumber" Type="int" />
-          <Property Name="SeatNumber" Type="int" />
-        </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -81,14 +73,24 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
+        <EntityType Name="Tariff">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Cost" Type="int" />
+        </EntityType>
         <EntityType Name="Tickets">
           <Key>
             <PropertyRef Name="TicketId" />
           </Key>
           <Property Name="TicketId" Type="int" Nullable="false" />
-          <Property Name="SeansId" Type="int" />
-          <Property Name="SeatId" Type="int" />
+          <Property Name="SeansId" Type="int" Nullable="false" />
+          <Property Name="Row" Type="int" Nullable="false" />
+          <Property Name="Columns" Type="int" Nullable="false" />
           <Property Name="Users_Id_FK" Type="int" Nullable="false" />
+          <Property Name="Tariff_Id_FK" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -99,7 +101,7 @@
           <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="FK__Tickets__SeansId__00200768">
-          <End Role="Seanses" Type="Self.Seanses" Multiplicity="0..1" />
+          <End Role="Seanses" Type="Self.Seanses" Multiplicity="1" />
           <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Seanses">
@@ -107,18 +109,6 @@
             </Principal>
             <Dependent Role="Tickets">
               <PropertyRef Name="SeansId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Tickets__SeatId__01142BA1">
-          <End Role="Seats" Type="Self.Seats" Multiplicity="0..1" />
-          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Seats">
-              <PropertyRef Name="SeatId" />
-            </Principal>
-            <Dependent Role="Tickets">
-              <PropertyRef Name="SeatId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -158,6 +148,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Tickets_Tariff">
+          <End Role="Tariff" Type="Self.Tariff" Multiplicity="1" />
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tariff">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="Tariff_Id_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Tickets_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
@@ -176,16 +178,12 @@
           <EntitySet Name="Films" EntityType="Self.Films" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hall" EntityType="Self.Hall" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Seanses" EntityType="Self.Seanses" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Seats" EntityType="Self.Seats" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tariff" EntityType="Self.Tariff" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Tickets__SeansId__00200768" Association="Self.FK__Tickets__SeansId__00200768">
             <End Role="Seanses" EntitySet="Seanses" />
-            <End Role="Tickets" EntitySet="Tickets" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Tickets__SeatId__01142BA1" Association="Self.FK__Tickets__SeatId__01142BA1">
-            <End Role="Seats" EntitySet="Seats" />
             <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
           <AssociationSet Name="FK_Administrators_AdministratoRole" Association="Self.FK_Administrators_AdministratoRole">
@@ -199,6 +197,10 @@
           <AssociationSet Name="FK_Seanses_Hall" Association="Self.FK_Seanses_Hall">
             <End Role="Hall" EntitySet="Hall" />
             <End Role="Seanses" EntitySet="Seanses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tickets_Tariff" Association="Self.FK_Tickets_Tariff">
+            <End Role="Tariff" EntitySet="Tariff" />
+            <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
           <AssociationSet Name="FK_Tickets_Users" Association="Self.FK_Tickets_Users">
             <End Role="Users" EntitySet="Users" />
@@ -266,22 +268,13 @@
           <Key>
             <PropertyRef Name="SeansId" />
           </Key>
-          <Property Name="SeansId" Type="Int32" Nullable="false" />
+          <Property Name="SeansId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FilmId" Type="Int32" Nullable="false" />
           <Property Name="SeansTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Hall_Id_FK" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Films" Relationship="Self.FK_Seanses_Films" FromRole="Seanses" ToRole="Films" />
           <NavigationProperty Name="Hall" Relationship="Self.FK_Seanses_Hall" FromRole="Seanses" ToRole="Hall" />
           <NavigationProperty Name="Tickets" Relationship="Self.FK__Tickets__SeansId__00200768" FromRole="Seanses" ToRole="Tickets" />
-        </EntityType>
-        <EntityType Name="Seats">
-          <Key>
-            <PropertyRef Name="SeatId" />
-          </Key>
-          <Property Name="SeatId" Type="Int32" Nullable="false" />
-          <Property Name="RowNumber" Type="Int32" />
-          <Property Name="SeatNumber" Type="Int32" />
-          <NavigationProperty Name="Tickets" Relationship="Self.FK__Tickets__SeatId__01142BA1" FromRole="Seats" ToRole="Tickets" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -298,12 +291,14 @@
             <PropertyRef Name="TicketId" />
           </Key>
           <Property Name="TicketId" Type="Int32" Nullable="false" />
-          <Property Name="SeansId" Type="Int32" />
-          <Property Name="SeatId" Type="Int32" />
+          <Property Name="SeansId" Type="Int32" Nullable="false" />
+          <Property Name="Row" Type="Int32" Nullable="false" />
+          <Property Name="Columns" Type="Int32" Nullable="false" />
           <Property Name="Users_Id_FK" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Seanses" Relationship="Self.FK__Tickets__SeansId__00200768" FromRole="Tickets" ToRole="Seanses" />
-          <NavigationProperty Name="Seats" Relationship="Self.FK__Tickets__SeatId__01142BA1" FromRole="Tickets" ToRole="Seats" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Tickets_Users" FromRole="Tickets" ToRole="Users" />
+          <Property Name="Tariff_Id_FK" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tariff" Relationship="CinemaModel.FK_Tickets_Tariff" FromRole="Tickets" ToRole="Tariff" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -351,7 +346,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Tickets__SeansId__00200768">
-          <End Role="Seanses" Type="Self.Seanses" Multiplicity="0..1" />
+          <End Role="Seanses" Type="Self.Seanses" Multiplicity="1" />
           <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Seanses">
@@ -359,18 +354,6 @@
             </Principal>
             <Dependent Role="Tickets">
               <PropertyRef Name="SeansId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Tickets__SeatId__01142BA1">
-          <End Role="Seats" Type="Self.Seats" Multiplicity="0..1" />
-          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Seats">
-              <PropertyRef Name="SeatId" />
-            </Principal>
-            <Dependent Role="Tickets">
-              <PropertyRef Name="SeatId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -392,7 +375,6 @@
           <EntitySet Name="Films" EntityType="Self.Films" />
           <EntitySet Name="Hall" EntityType="Self.Hall" />
           <EntitySet Name="Seanses" EntityType="Self.Seanses" />
-          <EntitySet Name="Seats" EntityType="Self.Seats" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" />
           <EntitySet Name="Users" EntityType="Self.Users" />
@@ -412,15 +394,37 @@
             <End Role="Seanses" EntitySet="Seanses" />
             <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
-          <AssociationSet Name="FK__Tickets__SeatId__01142BA1" Association="Self.FK__Tickets__SeatId__01142BA1">
-            <End Role="Seats" EntitySet="Seats" />
-            <End Role="Tickets" EntitySet="Tickets" />
-          </AssociationSet>
           <AssociationSet Name="FK_Tickets_Users" Association="Self.FK_Tickets_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
+          <EntitySet Name="Tariff" EntityType="CinemaModel.Tariff" />
+          <AssociationSet Name="FK_Tickets_Tariff" Association="CinemaModel.FK_Tickets_Tariff">
+            <End Role="Tariff" EntitySet="Tariff" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Tariff">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Cost" Type="Int32" />
+          <NavigationProperty Name="Tickets" Relationship="CinemaModel.FK_Tickets_Tariff" FromRole="Tariff" ToRole="Tickets" />
+        </EntityType>
+        <Association Name="FK_Tickets_Tariff">
+          <End Type="CinemaModel.Tariff" Role="Tariff" Multiplicity="1" />
+          <End Type="CinemaModel.Tickets" Role="Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tariff">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="Tariff_Id_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -490,15 +494,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Seats">
-            <EntityTypeMapping TypeName="CinemaModel.Seats">
-              <MappingFragment StoreEntitySet="Seats">
-                <ScalarProperty Name="SeatId" ColumnName="SeatId" />
-                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
-                <ScalarProperty Name="SeatNumber" ColumnName="SeatNumber" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="CinemaModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
@@ -513,9 +508,11 @@
           <EntitySetMapping Name="Tickets">
             <EntityTypeMapping TypeName="CinemaModel.Tickets">
               <MappingFragment StoreEntitySet="Tickets">
+                <ScalarProperty Name="Tariff_Id_FK" ColumnName="Tariff_Id_FK" />
                 <ScalarProperty Name="TicketId" ColumnName="TicketId" />
                 <ScalarProperty Name="SeansId" ColumnName="SeansId" />
-                <ScalarProperty Name="SeatId" ColumnName="SeatId" />
+                <ScalarProperty Name="Row" ColumnName="Row" />
+                <ScalarProperty Name="Columns" ColumnName="Columns" />
                 <ScalarProperty Name="Users_Id_FK" ColumnName="Users_Id_FK" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -526,6 +523,15 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="login" ColumnName="login" />
                 <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tariff">
+            <EntityTypeMapping TypeName="CinemaModel.Tariff">
+              <MappingFragment StoreEntitySet="Tariff">
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

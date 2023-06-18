@@ -3,6 +3,7 @@ using CinemaProjectLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -15,11 +16,14 @@ namespace CinemaProject.View.Pages
         private const int MaxButtonsPerPage = 5;
         private List<Button> filmButtons = new List<Button>();
         private int currentPageIndex = 0;
-
+        private Users user;
+        private Administrators admin;
         Core db = new Core();
 
-        public MainPage()
+        public MainPage(Users user=null,Administrators admin=null)
         {
+            this.user = user;
+            this.admin = admin;
             InitializeComponent();
             PopulateFilmButtons();
         }
@@ -159,7 +163,7 @@ namespace CinemaProject.View.Pages
         {
             // Здесь вы можете выполнить необходимые действия при нажатии на кнопку фильма
             // например, перейти на другую страницу и передать экземпляр объекта фильма
-            NavigationService.Navigate(new FilmInfoPage(film));
+            NavigationService.Navigate(new FilmInfoPage(film,user,admin));
         }
     }
 }

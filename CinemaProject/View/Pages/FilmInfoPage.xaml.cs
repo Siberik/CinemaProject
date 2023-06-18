@@ -10,11 +10,11 @@ namespace CinemaProject.View.Pages
     {
         private Core db = new Core();
         private Films film;
-
-        public FilmInfoPage(Films film)
+        private Users user;
+        public FilmInfoPage(Films film,Users user=null,Administrators admin=null)
         {
             InitializeComponent();
-
+            this.user = user;
             this.film = film;
 
             // Set film image
@@ -61,15 +61,15 @@ namespace CinemaProject.View.Pages
 
         private void NavigateToSeansesPage(Seanses seans)
         {
-            //SeansesPage seansesPage = new SeansesPage(seans);
-            //NavigationService.Navigate(seansesPage);
+            SeansInfoPage seansesPage = new SeansInfoPage(seans, user);
+            NavigationService.Navigate(seansesPage);
         }
 
-     
+
 
         private void AddSeansButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
-            AddSeans addSeans = new AddSeans(this.film);
+            AddSeans addSeans = new AddSeans(film);
             addSeans.ShowDialog();
         }
     }
