@@ -76,7 +76,7 @@ namespace PopupApp
             popup_uc.PlacementTarget = Settings;
             popup_uc.Placement = PlacementMode.Right;
             popup_uc.IsOpen = true;
-            Header.PopupText.Text = "Казахстан";
+            Header.PopupText.Text = "Управление";
         }
 
         private void Settings_MouseLeave(object sender, MouseEventArgs e)
@@ -109,6 +109,16 @@ namespace PopupApp
         private void Profile_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new PersonalPage());
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SettingsClick(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new SettingsPage());
         }
     }
 }
