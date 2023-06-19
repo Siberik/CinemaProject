@@ -20,18 +20,19 @@ namespace CinemaProject.View.Pages
         private Administrators admin;
         Core db = new Core();
 
-        public MainPage(Users user=null,Administrators admin=null)
+        public MainPage(Users user = null, Administrators admin = null)
         {
             this.user = user;
             this.admin = admin;
             InitializeComponent();
             PopulateFilmButtons();
-            if (admin != null) { 
-            AddButton.Visibility = Visibility.Visible;
+            if (admin != null)
+            {
+                AddButton.Visibility = Visibility.Visible;
             }
             else
             {
-                AddButton.Visibility= Visibility.Collapsed;
+                AddButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -66,8 +67,6 @@ namespace CinemaProject.View.Pages
             }
         }
 
-
-
         private void ShowCurrentPage()
         {
             FilmsStackPanel.Children.Clear();
@@ -88,26 +87,6 @@ namespace CinemaProject.View.Pages
         {
             PrevButton.IsEnabled = currentPageIndex > 0;
             NextButton.IsEnabled = (currentPageIndex + 1) * MaxButtonsPerPage < filmButtons.Count;
-        }
-
-        private void PrevButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (currentPageIndex > 0)
-            {
-                currentPageIndex--;
-                ShowCurrentPage();
-            }
-        }
-
-        private void NextButton_Click(object sender, RoutedEventArgs e)
-        {
-            int totalPages = (int)Math.Ceiling((double)filmButtons.Count / MaxButtonsPerPage);
-
-            if (currentPageIndex < totalPages - 1)
-            {
-                currentPageIndex++;
-                ShowCurrentPage();
-            }
         }
 
         private Grid CreateFilmButtonContent(Films film)
@@ -139,9 +118,6 @@ namespace CinemaProject.View.Pages
             return grid;
         }
 
-
-
-
         private BitmapImage LoadFilmImage(Films film)
         {
             try
@@ -170,12 +146,27 @@ namespace CinemaProject.View.Pages
         {
             // Здесь вы можете выполнить необходимые действия при нажатии на кнопку фильма
             // например, перейти на другую страницу и передать экземпляр объекта фильма
-            NavigationService.Navigate(new FilmInfoPage(film,user,admin));
+            NavigationService.Navigate(new FilmInfoPage(film, user, admin));
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void PrevButton_Click(object sender, RoutedEventArgs e)
         {
+            if (currentPageIndex > 0)
+            {
+                currentPageIndex--;
+                ShowCurrentPage();
+            }
+        }
 
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            int totalPages = (int)Math.Ceiling((double)filmButtons.Count / MaxButtonsPerPage);
+
+            if (currentPageIndex < totalPages - 1)
+            {
+                currentPageIndex++;
+                ShowCurrentPage();
+            }
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
@@ -183,5 +174,45 @@ namespace CinemaProject.View.Pages
             AddFilm addFilm = new AddFilm();
             addFilm.Show();
         }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = SearchTextBox.Text;
+
+            // Выполнить поиск по имени фильма
+            List<Films> searchResults = db.context.Films.Where(film => film.Name.Contains(searchText)).ToList();
+
+            // Очистить текущий список кнопок фильмов
+            FilmsStackPanel.Children.Clear();
+            filmButtons.Clear();
+
+            if (searchResults.Count == 0)
+            {
+                FilmsStackPanel.Children.Add(new TextBlock { Text = "Нет результатов" });
+            }
+            else
+            {
+                // Создать кнопки фильмов на основе результатов поиска
+                Style buttonStyle = Application.Current.Resources["FilmButtonStyle"] as Style;
+
+                foreach (var film in searchResults)
+                {
+                    Button button = new Button();
+                    button.Margin = new Thickness(0, 0, 10, 0);
+                    button.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    button.Width = 240;
+                    button.Height = 390;
+                    button.Style = buttonStyle;
+                    button.Content = CreateFilmButtonContent(film);
+                    button.Click += (s, args) => FilmButton_Click(film);
+
+                    filmButtons.Add(button);
+                    FilmsStackPanel.Children.Add(button);
+                }
+            }
+
+            UpdatePaginationButtons();
+        }
+
     }
 }
