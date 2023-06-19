@@ -54,8 +54,8 @@ namespace CinemaProject.View.Pages
             var administrator = (Administrators)button.Tag;
 
             // Переход на другую страницу, например, Page2 с передачей данных
-            //Page2 page2 = new Page2(administrator);
-            //NavigationService?.Navigate(page2);
+            PersonalInfoPage page2 = new PersonalInfoPage(administrator);
+            NavigationService?.Navigate(page2);
         }
 
         private void PreviousPage_Click(object sender, RoutedEventArgs e)

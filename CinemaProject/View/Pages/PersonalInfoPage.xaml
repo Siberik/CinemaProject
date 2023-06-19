@@ -1,0 +1,97 @@
+﻿<Page x:Class="CinemaProject.View.Pages.PersonalInfoPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CinemaProject.View.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Title="PersonalInfoPage" FontSize="16.5">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Информация о сотруднике" FontSize="21" FontWeight="Bold"/>
+        <StackPanel Orientation="Horizontal">
+            <Button Margin="370,0,0,0" HorizontalAlignment="Right" Click="RedactButtonClick">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Pencil" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <TextBlock Text="Редактировать сотрудника"/>
+            </StackPanel>
+                
+        </Button>
+          
+                <Button HorizontalAlignment="Right" Background="Red" Click="DaeleteButtonClick" Margin="10,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Delete" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="Удалить сотрудника"/>
+                    </StackPanel>
+
+                </Button>
+         
+            </StackPanel>
+        
+
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10">
+            <TextBlock Width="100" Text="Фамилия: "/>
+            <TextBlock Width="200" x:Name="txtLastName"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10">
+            <TextBlock Width="100" Text="Имя: "/>
+            <TextBlock Width="200" x:Name="txtFirstName"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,10">
+            <TextBlock Width="100" Text="Отчество: "/>
+            <TextBlock Width="200" x:Name="txtPatronymic"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,10">
+            <TextBlock Width="123" Text="Дата рождения: "/>
+            <TextBlock Width="200" x:Name="dateBirthDate"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,10">
+            <TextBlock Width="100" Text="Адрес: "/>
+            <TextBlock Width="200" x:Name="txtAddress"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="0,10">
+            <TextBlock Width="100" Text="Телефон: "/>
+            <TextBlock Width="200" x:Name="txtPhone"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="7" Orientation="Horizontal" Margin="0,10">
+            <TextBlock Width="100" Text="Паспорт: "/>
+            <TextBlock Width="200" x:Name="txtPassport"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="8" Orientation="Horizontal" Margin="0,10">
+            <TextBlock Width="100" Text="Оклад: "/>
+            <TextBlock Width="200" x:Name="txtSalary"/>
+        </StackPanel>
+
+      
+
+        <!-- Mini-section for role description -->
+        <StackPanel Grid.Row="10" Orientation="Vertical" Margin="0,10">
+            <TextBlock FontWeight="Bold" Text="Роль: " Name="txtRole"/>
+            <TextBlock Text="Обязанности: " Name="txtRequirements"/>
+            <TextBlock Text="Требования: " Name="txtResponsibilities"/>
+        </StackPanel>
+
+    </Grid>
+</Page>

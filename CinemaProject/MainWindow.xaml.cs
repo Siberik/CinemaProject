@@ -62,7 +62,7 @@ namespace PopupApp
             popup_uc.PlacementTarget = Profile;
             popup_uc.Placement = PlacementMode.Right;
             popup_uc.IsOpen = true;
-            Header.PopupText.Text = "Страница с сотрудниками";
+            Header.PopupText.Text = "Сотрудники";
         }
 
         private void Profile_MouseLeave(object sender, MouseEventArgs e)
