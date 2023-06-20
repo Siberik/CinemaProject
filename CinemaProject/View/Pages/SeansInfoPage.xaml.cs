@@ -181,20 +181,31 @@ namespace CinemaProject.View.Pages
                 return;
             }
 
-            // Удалить билеты, связанные с выбранным сеансом
-            db.context.Tickets.RemoveRange(selectedSeans.Tickets);
+            // Найти билеты, связанные с выбранным сеансом
+            var ticketsToRemove = db.context.Tickets.Where(t => t.SeansId == selectedSeans.SeansId).ToList();
+
+            // Удалить найденные билеты из базы данных
+            db.context.Tickets.RemoveRange(ticketsToRemove);
 
             // Загрузить выбранный сеанс из базы данных
-            selectedSeans = db.context.Seanses.Find(selectedSeans.SeansId);
+            var dbSeans = db.context.Seanses.Find(selectedSeans.SeansId);
+            if (dbSeans != null)
+            {
+                // Удалить выбранный сеанс
+                db.context.Seanses.Remove(dbSeans);
 
-            // Удалить выбранный сеанс
-            db.context.Seanses.Remove(selectedSeans);
+                // Сохранить изменения в базе данных
+                db.context.SaveChanges();
 
-            // Сохранить изменения в базе данных
-            db.context.SaveChanges();
+                // Дополнительная логика после удаления сеанса и билетов
+                MessageBox.Show("Сеанс удалён");
+            }
+            else
+            {
+                MessageBox.Show("Сеанс не найден");
+            }
 
-            // Дополнительная логика после удаления сеанса и билетов
-            MessageBox.Show("Сеанс удалён");
+
         }
 
 

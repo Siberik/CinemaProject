@@ -51,7 +51,11 @@ namespace CinemaProject.View.Pages
                 var seanses = db.context.Seanses.FirstOrDefault(x => x.SeansId == ticket.SeansId);
                 var hall = db.context.Hall.Where(x => x.Id == seanses.Hall_Id_FK).Select(x => x.Id).FirstOrDefault();
                 var mesta = $"Ряд {ticket.Row} Место {ticket.Columns}";
+                var filmIds = db.context.Seanses.Where(x => x.SeansId == ticket.SeansId).Select(x=>x.FilmId).FirstOrDefault();
+                var filmName = db.context.Films.Where(x => x.Id == filmIds).Select(x=>x.Name).FirstOrDefault();
+                
                 doc.Bookmarks["Дата"].Range.Text = $"{date}";
+                doc.Bookmarks["Фильм"].Range.Text =filmName.ToString();
                 doc.Bookmarks["Зал"].Range.Text = $"{hall}";
                 doc.Bookmarks["Места"].Range.Text = $"{mesta}";
 

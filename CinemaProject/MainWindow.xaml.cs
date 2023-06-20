@@ -36,6 +36,7 @@ namespace PopupApp
             if(user != null)
             {
                 Profile.Visibility = Visibility.Collapsed;
+                Settings.Visibility = Visibility.Collapsed;
             }
             MainFrame.NavigationService.Navigate(new MainPage(user,admin));
             ITheme theme = paletteHelper.GetTheme();
