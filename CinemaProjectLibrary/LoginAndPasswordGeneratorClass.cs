@@ -1,30 +1,53 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CinemaProjectLibrary
 {
     public class LoginAndPasswordGeneratorClass
     {
-       
+        private const string LoginChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        private const string PasswordChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:'\",.<>/?";
+
         // Генерация случайного логина заданной длины
         public static string GenerateRandomLogin(int length)
         {
-            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[new Random().Next(s.Length)]).ToArray());
+            try
+            {
+                return GenerateRandomString(LoginChars, length);
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         // Генерация случайного пароля заданной длины
         public static string GenerateRandomPassword(int length)
         {
-            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:'\",.<>/?";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[new Random().Next(s.Length)]).ToArray());
+            try
+            {
+                return GenerateRandomString(PasswordChars, length);
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        private static string GenerateRandomString(string chars, int length)
+        {
+            if (length <= 0)
+                throw new ArgumentOutOfRangeException(nameof(length), "Length must be greater than zero.");
+
+            var random = new Random();
+            var result = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                int index = random.Next(chars.Length);
+                result[i] = chars[index];
+            }
+
+            return new string(result);
         }
     }
-
 }
-

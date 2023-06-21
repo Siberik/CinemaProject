@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Хранилище CinemaModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище CinemaDbModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AdministratoRole">
           <Key>
             <PropertyRef Name="Id" />
@@ -62,16 +62,6 @@
           <Property Name="FilmId" Type="int" Nullable="false" />
           <Property Name="SeansTime" Type="datetime" Nullable="false" />
           <Property Name="Hall_Id_FK" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Tariff">
           <Key>
@@ -159,13 +149,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Хранилище CinemaModelContainer">
+        <EntityContainer Name="Хранилище CinemaDbModelContainer">
           <EntitySet Name="AdministratoRole" EntityType="Self.AdministratoRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Administrators" EntityType="Self.Administrators" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Films" EntityType="Self.Films" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hall" EntityType="Self.Hall" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Seanses" EntityType="Self.Seanses" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tariff" EntityType="Self.Tariff" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
@@ -190,10 +179,11 @@
             <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="CinemaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="CinemaDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="AdministratoRole">
           <Key>
             <PropertyRef Name="Id" />
@@ -259,16 +249,6 @@
           <NavigationProperty Name="Hall" Relationship="Self.FK_Seanses_Hall" FromRole="Seanses" ToRole="Hall" />
           <NavigationProperty Name="Tickets" Relationship="Self.FK__Tickets__SeansId__00200768" FromRole="Seanses" ToRole="Tickets" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="Tariff">
           <Key>
             <PropertyRef Name="Id" />
@@ -281,7 +261,7 @@
           <Key>
             <PropertyRef Name="TicketId" />
           </Key>
-          <Property Name="TicketId" Type="Int32" Nullable="false" />
+          <Property Name="TicketId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SeansId" Type="Int32" Nullable="false" />
           <Property Name="Row" Type="Int32" Nullable="false" />
           <Property Name="Columns" Type="Int32" Nullable="false" />
@@ -364,7 +344,6 @@
           <EntitySet Name="Films" EntityType="Self.Films" />
           <EntitySet Name="Hall" EntityType="Self.Hall" />
           <EntitySet Name="Seanses" EntityType="Self.Seanses" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Tariff" EntityType="Self.Tariff" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" />
           <EntitySet Name="Users" EntityType="Self.Users" />
@@ -394,9 +373,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище CinemaModelContainer" CdmEntityContainer="CinemaEntities">
+        <EntityContainerMapping StorageEntityContainer="Хранилище CinemaDbModelContainer" CdmEntityContainer="CinemaEntities">
           <EntitySetMapping Name="AdministratoRole">
-            <EntityTypeMapping TypeName="CinemaModel.AdministratoRole">
+            <EntityTypeMapping TypeName="CinemaDbModel.AdministratoRole">
               <MappingFragment StoreEntitySet="AdministratoRole">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Post" ColumnName="Post" />
@@ -406,7 +385,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Administrators">
-            <EntityTypeMapping TypeName="CinemaModel.Administrators">
+            <EntityTypeMapping TypeName="CinemaDbModel.Administrators">
               <MappingFragment StoreEntitySet="Administrators">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Lastname" ColumnName="Lastname" />
@@ -424,7 +403,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Films">
-            <EntityTypeMapping TypeName="CinemaModel.Films">
+            <EntityTypeMapping TypeName="CinemaDbModel.Films">
               <MappingFragment StoreEntitySet="Films">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -441,7 +420,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Hall">
-            <EntityTypeMapping TypeName="CinemaModel.Hall">
+            <EntityTypeMapping TypeName="CinemaDbModel.Hall">
               <MappingFragment StoreEntitySet="Hall">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Count" ColumnName="Count" />
@@ -449,7 +428,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Seanses">
-            <EntityTypeMapping TypeName="CinemaModel.Seanses">
+            <EntityTypeMapping TypeName="CinemaDbModel.Seanses">
               <MappingFragment StoreEntitySet="Seanses">
                 <ScalarProperty Name="SeansId" ColumnName="SeansId" />
                 <ScalarProperty Name="FilmId" ColumnName="FilmId" />
@@ -458,19 +437,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="CinemaModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Tariff">
-            <EntityTypeMapping TypeName="CinemaModel.Tariff">
+            <EntityTypeMapping TypeName="CinemaDbModel.Tariff">
               <MappingFragment StoreEntitySet="Tariff">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -479,7 +447,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Tickets">
-            <EntityTypeMapping TypeName="CinemaModel.Tickets">
+            <EntityTypeMapping TypeName="CinemaDbModel.Tickets">
               <MappingFragment StoreEntitySet="Tickets">
                 <ScalarProperty Name="TicketId" ColumnName="TicketId" />
                 <ScalarProperty Name="SeansId" ColumnName="SeansId" />
@@ -490,7 +458,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="CinemaModel.Users">
+            <EntityTypeMapping TypeName="CinemaDbModel.Users">
               <MappingFragment StoreEntitySet="Users">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="login" ColumnName="login" />

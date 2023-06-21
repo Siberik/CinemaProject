@@ -42,18 +42,22 @@
                 
             </Button>
             </StackPanel>
-           
 
-            <TextBlock x:Name="IdTextBlock" FontWeight="Bold" FontSize="24"/>
-            <TextBlock x:Name="NameTextBlock" Margin="0,5,0,0" FontSize="20"/>
-            <TextBlock x:Name="DurationTextBlock" Margin="0,5,0,0" FontSize="16"/>
-            <TextBlock x:Name="GenreTextBlock" Margin="0,5,0,0" FontSize="16"/>
-            <TextBlock x:Name="GenreDescriptionTextBlock" Margin="0,5,0,0" FontSize="16"/>
-            <TextBlock x:Name="FirmTextBlock" Margin="0,5,0,0" FontSize="16"/>
-            <TextBlock x:Name="CountryTextBlock" Margin="0,5,0,0" FontSize="16"/>
-            <TextBlock x:Name="ActorsTextBlock" Margin="0,5,0,0" FontSize="16"/>
-            <TextBlock x:Name="VozrastTextBlock" Margin="0,5,0,0" FontSize="16"/>
-            <TextBlock x:Name="DescriptionTextBlock" Margin="0,5,0,0" FontSize="16"/>
+
+            <TextBlock x:Name="IdTextBlock" TextWrapping="Wrap" FontWeight="Bold" FontSize="24"/>
+            <TextBlock x:Name="NameTextBlock" TextWrapping="Wrap" Margin="0,5,0,0" FontSize="20"/>
+            <TextBlock x:Name="DurationTextBlock" TextWrapping="Wrap" Margin="0,5,0,0" FontSize="16"/>
+            <TextBlock x:Name="GenreTextBlock" TextWrapping="Wrap" Margin="0,5,0,0" FontSize="16"/>
+
+            <TextBlock x:Name="GenreDescriptionTextBlock" Margin="0,5,0,0" FontSize="16" TextWrapping="Wrap"/>
+
+            <TextBlock x:Name="FirmTextBlock" TextWrapping="Wrap" Margin="0,5,0,0" FontSize="16"/>
+            <TextBlock x:Name="CountryTextBlock" TextWrapping="Wrap" Margin="0,5,0,0" FontSize="16"/>
+            <TextBlock x:Name="ActorsTextBlock" TextWrapping="Wrap" Margin="0,5,0,0" FontSize="16"/>
+            <TextBlock x:Name="VozrastTextBlock" TextWrapping="Wrap" Margin="0,5,0,0" FontSize="16"/>
+            <TextBlock x:Name="DescriptionTextBlock" TextWrapping="Wrap" Margin="0,5,0,0" FontSize="16"/>
+           
+          
         </StackPanel>
 
         <!-- Раздел "Ближайшие кинопоказы" -->

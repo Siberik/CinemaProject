@@ -4,21 +4,20 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="9601634920234f068355055f874d6945" Name="Diagram1">
-        <EntityTypeShape EntityType="CinemaModel.AdministratoRole" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CinemaModel.Administrators" Width="1.5" PointX="8" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CinemaModel.Films" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="CinemaModel.Hall" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="CinemaModel.Seanses" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CinemaModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CinemaModel.Tariff" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CinemaModel.Tickets" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CinemaModel.Users" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
-        <AssociationConnector Association="CinemaModel.FK_Administrators_AdministratoRole" ManuallyRouted="false" />
-        <AssociationConnector Association="CinemaModel.FK_Seanses_Films" ManuallyRouted="false" />
-        <AssociationConnector Association="CinemaModel.FK_Seanses_Hall" ManuallyRouted="false" />
-        <AssociationConnector Association="CinemaModel.FK__Tickets__SeansId__00200768" ManuallyRouted="false" />
-        <AssociationConnector Association="CinemaModel.FK_Tickets_Users" ManuallyRouted="false" />
+      <Diagram DiagramId="bd28ef1010d6489bb4061faaed28926e" Name="Diagram1">
+        <EntityTypeShape EntityType="CinemaDbModel.AdministratoRole" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CinemaDbModel.Administrators" Width="1.5" PointX="8" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CinemaDbModel.Films" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="CinemaDbModel.Hall" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CinemaDbModel.Seanses" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CinemaDbModel.Tariff" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CinemaDbModel.Tickets" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CinemaDbModel.Users" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <AssociationConnector Association="CinemaDbModel.FK_Administrators_AdministratoRole" ManuallyRouted="false" />
+        <AssociationConnector Association="CinemaDbModel.FK_Seanses_Films" ManuallyRouted="false" />
+        <AssociationConnector Association="CinemaDbModel.FK_Seanses_Hall" ManuallyRouted="false" />
+        <AssociationConnector Association="CinemaDbModel.FK__Tickets__SeansId__00200768" ManuallyRouted="false" />
+        <AssociationConnector Association="CinemaDbModel.FK_Tickets_Users" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

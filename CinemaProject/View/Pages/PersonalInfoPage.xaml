@@ -22,7 +22,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Информация о сотруднике" FontSize="21" FontWeight="Bold"/>
+        <TextBlock Grid.Row="0" Text="Информация о сотруднике" Foreground="{StaticResource TextSecundaryColor}" FontSize="21" FontWeight="Bold"/>
         <StackPanel Orientation="Horizontal">
             <Button Margin="370,0,0,0" HorizontalAlignment="Right" Click="RedactButtonClick">
             <StackPanel Orientation="Horizontal">

@@ -10,7 +10,7 @@
       Title="MainPage" Foreground="{DynamicResource TextPrimaryColor}">
     <Grid>
         <StackPanel>
-            <TextBlock FontSize="30" VerticalAlignment="Top">Новинки кино</TextBlock>
+            <TextBlock FontSize="30" VerticalAlignment="Top" Foreground="{StaticResource TextSecundaryColor}">Новинки кино</TextBlock>
             <Button HorizontalAlignment="Right" Name="AddButton" Margin="0,0,10,0" Click="AddButtonClick">
                 <Button.Content>
                     <Grid>
